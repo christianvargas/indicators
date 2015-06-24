@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Aditus</title>
+		<link rel="stylesheet" type="text/css" href="./assets/css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="./assets/css/main.css">
+		<link rel="stylesheet" type="text/css" href="./assets/css/application.css">
+		<link rel="stylesheet" type="text/css" href="./assets/css/jquery-ui.min.css">
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<span class="brand">Aditus</span>
+				</div>
+			</div>
+		</div>
+
+		<div id="app-container">
+			<div id="main-region" class="container"></div>
+			<div id="dialog-region"></div>
+		</div>
+
+		<script type="text/template" id="indicator-list-layout">
+			<div id="panel-region"></div>
+			<div id="indicators-region"></div>
+		</script>
+
+		<script type="text/template" id="indicator-list-panel">
+			<button class="btn btn-primary js-new">New Indicator</button>
+		</script>
+
+		<script type="text/template" id="indicator-list">
+			
+			<div class="ui-accordion ui-accordion-inverted">
+			    <div class="panel-group no-margin" id="indicatorsHeader">
+			        <div class="panel panel-default">
+			            <div class="panel-heading">
+			                <h4 class="panel-title text-bold">
+			                    <a data-toggle="collapse" data-parent="#indicatorsHeader">
+
+			                        <div class="row heading">
+			                            <div class="col-xs-4">
+			                                <div class="first-col">
+			                                    Indicator
+			                                </div>
+			                            </div>
+			                            <div class="col-xs-4">
+			                                Question
+			                            </div>
+			                            <div class="col-xs-2 text-center">
+			                                Category
+			                            </div>
+			                            <div class="col-xs-2">
+			                                &nbsp;
+			                            </div>
+			                        </div>
+
+			                    </a>
+			                </h4>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+
+            <div class="ui-accordion ui-accordion-inverted">
+                <div class="panel-group" id="indicatorsList">
+                </div>
+            </div>
+		</script>
+
+		<script type="text/template" id="indicator-list-item">
+			<div class="panel panel-default panel-<%- categoryCode %>" data-id="<%- id %>">
+			    <div class="panel-heading">
+			        <h4 class="panel-title">
+
+			            <div class="row">
+			                <div class="col-xs-4">
+                            	<%- name %>
+			                </div>
+			                <div class="col-xs-4">
+			                    <%- question %>
+			                </div>
+			                <div class="col-xs-2 text-center text-thin">
+			                    <%- categoryName %>
+			                </div>
+			                <div class="col-xs-2 text-right">			                    
+								<a href="#/indicators/<%- id %>" class="js-show">
+									View
+								</a>		
+								|
+								<a href="#/indicators/<%- id %>/edit" class="js-edit">
+									Edit
+								</a>		
+			                </div>
+			            </div>
+
+			        </h4>
+			    </div>
+			    <div id="indicator<%- id %>" class="panel-collapse">
+			        <div class="panel-body">
+
+			            <div class="row">
+			                <div class="col-xs-4">
+			                    <div class="first-col">
+			                        <div class="rows header-row">
+			                            <small>Unique ID</small>
+			                            <p><%- code %></p>
+			                        </div>
+			                        <div class="rows header-row">
+			                            <small>Answer Type</small>
+			                        </div>
+		                            <div class="header-row">
+		                                <small>Unit of Measure</small>
+		                                <p><%- unit %></p>
+		                            </div>
+		                            <div class="rows header-row">
+		                                <small>Business Value</small>
+		                                <p><%- businessValue %></p>
+		                            </div>
+		                            <div class="rows header-row">
+		                                <small>Theme</small>
+		                                <p><%- theme %></p>
+		                            </div>
+			                    </div>
+			                </div>
+			                <div class="col-xs-7">
+
+
+			                    <div class="ui-tab pills-tab">
+			                        <ul class="nav nav-pills" role="tablist">
+			                            <li class="active"><a href="#rationale<%- id %>" role="tab" data-toggle="tab">Rationale</a></li>			                            
+			                            <li><a href="#help<%- id %>" role="tab" data-toggle="tab">Help</a></li>
+			                            <li><a href="#notes<%- id %>" role="tab" data-toggle="tab">Notes</a></li>
+			                        </ul>
+
+			                        <div class="tab-content">
+			                        	<div class="tab-pane active" id="rationale<%- id %>">
+			                        		<%- rationale %>
+			                        	</div>
+			                        	<div class="tab-pane" id="help<%- id %>">
+			                        		<%- help %>
+			                        	</div>
+			                        	<div class="tab-pane" id="notes<%- id %>">
+			                        		<%- notes %>
+			                        	</div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+
+
+			        </div>
+			    </div>
+			</div>
+		</script>
+
+		<script type="text/template" id="indicator-view">
+			<h3>Indicator Detail View</h3>
+			<small>Name</small>
+			<p><%- name %></p>
+			<small>Question</small>
+			<p><%- question %></p>
+
+			<a href="#indicators/<%- id %>/edit" class="btn btn-small btn-primary js-edit">Edit</a> | <a href="#indicators" class="btn btn-small btn-dark">List</a>			
+		</script>
+
+		<script type="text/template" id="missing-indicator-view">
+			<div class="alert alert-error">Indicator not found</div>
+		</script>
+
+		<script type="text/template" id="loading-view">
+			<h1><%- title %></h1>
+			<p><%- message %></p>
+		</script>
+
+		<script type="text/template" id="indicator-form">
+			<form class="">
+				<div class="form-group">
+					<label for="indicator-name">
+						Name
+					</label>
+					<input id="indicator-name" class="form-control" name="name" type="text" value="<%- name %>" />
+				</div>
+				<div class="form-group">
+					<label for="indicator-question">
+						Question
+					</label>
+					<input id="indicator-question" class="form-control" name="question" type="text" value="<%- question %>" />
+				</div>
+				<button class="btn btn-small btn-primary js-submit">Save</button>
+			</form>
+		</script>
+
+		<script src="./assets/js/vendor/jquery-1.11.3.js"></script>
+		<script src="./assets/js/vendor/jquery-ui.min.js"></script>
+		<script src="./assets/js/vendor/json2.js"></script>
+		<script src="./assets/js/vendor/underscore.js"></script>
+		<script src="./assets/js/vendor/backbone.js"></script>
+		<script src="./assets/js/vendor/backbone.syphon.js"></script>
+		<script src="./assets/js/vendor/backbone.localStorage.js"></script>
+		<script src="./assets/js/vendor/backbone.marionette.js"></script>
+		<script src="./assets/js/vendor/bootstrap.min.js"></script>
+
+		<script src="./assets/js/app.js"></script>
+		<script src="./assets/js/apps/config/storage/localstorage.js"></script>
+		<script src="./assets/js/entities/indicator.js"></script>
+		<script src="./assets/js/common/views.js"></script>
+		<script src="./assets/js/apps/indicators/indicators_app.js"></script>
+		<script src="./assets/js/apps/indicators/common/views.js"></script>
+		<script src="./assets/js/apps/indicators/list/list_view.js"></script>
+		<script src="./assets/js/apps/indicators/list/list_controller.js"></script>
+		<script src="./assets/js/apps/indicators/show/show_view.js"></script>
+		<script src="./assets/js/apps/indicators/show/show_controller.js"></script>
+		<script src="./assets/js/apps/indicators/edit/edit_view.js"></script>
+		<script src="./assets/js/apps/indicators/edit/edit_controller.js"></script>
+		<script src="./assets/js/apps/indicators/new/new_view.js"></script>
+
+		<script type="text/javascript">
+			App.start();
+		</script>
+	</body>
+</html>
